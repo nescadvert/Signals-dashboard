@@ -43,8 +43,9 @@ export const generateSignalAnalysis = async (signal, retryCount = 1) => {
       });
 
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || `Erreur d'accès à l'IA (${response.status})`);
+        const errorData = await response.json().catch(() => ({}));
+        const errorMessage = errorData.error?.message || errorData.error || `Erreur d'accès à l'IA (${response.status})`;
+        throw new Error(typeof errorMessage === 'string' ? errorMessage : JSON.stringify(errorMessage));
       }
 
       const data = await response.json();
@@ -83,8 +84,9 @@ export const generateSignalAnalysis = async (signal, retryCount = 1) => {
     });
 
     if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.error?.message || 'OpenAI API request failed');
+      const errorData = await response.json().catch(() => ({}));
+      const errorMessage = errorData.error?.message || errorData.error || 'OpenAI API request failed';
+      throw new Error(typeof errorMessage === 'string' ? errorMessage : JSON.stringify(errorMessage));
     }
 
     const data = await response.json();

@@ -394,7 +394,9 @@ export default function SignalsView({ signals, sources = [], onRefresh }) {
                         <span className="log-author">{err.author}</span>
                         {err.isCleanedUp && <span className="status-pill-small">Auto-archivé</span>}
                       </div>
-                      <span className="log-message">{err.error}</span>
+                      <span className="log-message">
+                        {typeof err.error === 'string' ? err.error : JSON.stringify(err.error)}
+                       </span>
                     </div>
                   ))}
                 </div>
