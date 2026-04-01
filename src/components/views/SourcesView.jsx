@@ -169,10 +169,15 @@ export default function SourcesView({ sources, signals = [], onRefresh }) {
                     <td>
                       <div className="row-title-pair">
                         <div className="source-name-bold">{src.name}</div>
-                        <span className="row-sub-type">{src.type || 'Social'}</span>
+                        <div style={{ display: 'flex', gap: '4px', alignItems: 'center' }}>
+                          <span className="row-sub-type">{src.type || 'Social'}</span>
+                          <span className={`platform-badge ${String(src.platform).toLowerCase()} mobile-only`} style={{ fontSize: '0.6rem', padding: '1px 4px' }}>
+                            {src.platform}
+                          </span>
+                        </div>
                       </div>
                     </td>
-                    <td>
+                    <td className="desktop-only">
                       <span className={`platform-badge ${String(src.platform).toLowerCase()}`}>
                         {src.platform}
                       </span>
@@ -183,14 +188,14 @@ export default function SourcesView({ sources, signals = [], onRefresh }) {
                         {src.status}
                       </div>
                     </td>
-                    <td>
+                    <td className="desktop-only">
                       <div className="keywords-tags">
                         {src.keywords ? src.keywords.split(',').map((kw, i) => (
                           <span key={i} className="kw-tag">{kw.trim()}</span>
                         )) : <span className="text-muted small italic">None</span>}
                       </div>
                     </td>
-                    <td>
+                    <td className="desktop-only">
                       <div className="metrics-col">
                         <Activity size={14} className="text-accent" />
                         <span>
@@ -201,7 +206,7 @@ export default function SourcesView({ sources, signals = [], onRefresh }) {
                         </span>
                       </div>
                     </td>
-                    <td>
+                    <td className="desktop-only">
                       <span className="date-cell">
                         {src.lastScan ? new Date(src.lastScan).toLocaleDateString() : 'Never'}
                       </span>

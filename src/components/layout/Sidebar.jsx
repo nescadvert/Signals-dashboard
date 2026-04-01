@@ -12,7 +12,7 @@ import {
   LogOut
 } from 'lucide-react';
 
-export default function Sidebar({ activeView, onViewChange, onLogout }) {
+export default function Sidebar({ activeView, onViewChange, onLogout, isOpen }) {
   const menuItems = [
     { id: 'overview', label: 'Overview', icon: LayoutDashboard },
     { id: 'signals', label: 'Signals', icon: Zap },
@@ -26,7 +26,7 @@ export default function Sidebar({ activeView, onViewChange, onLogout }) {
   ];
 
   return (
-    <div className="workspace-sidebar">
+    <div className={`workspace-sidebar ${isOpen ? 'open' : ''}`}>
       <div className="sidebar-brand">
         <div className="brand-logo">
           <Target size={24} />

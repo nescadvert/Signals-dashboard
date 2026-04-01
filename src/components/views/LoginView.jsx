@@ -30,9 +30,9 @@ export default function LoginView({ onLogin }) {
       zIndex: 9999
     }}>
       <div style={{ 
-        width: '100%', 
+        width: '90%', 
         maxWidth: '400px', 
-        padding: '2.5rem', 
+        padding: '2rem 1.5rem', 
         background: 'var(--bg-card)', 
         borderRadius: '24px', 
         border: '1px solid var(--border-subtle)',

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Sidebar from './components/layout/Sidebar';
+import Navbar from './components/layout/Navbar';
 import Overview from './components/views/Overview';
 import SignalsView from './components/views/SignalsView';
 import SourcesView from './components/views/SourcesView';
@@ -9,12 +10,13 @@ import LandingPageView from './components/views/LandingPageView';
 import LoginView from './components/views/LoginView';
 import { fetchSignals, fetchSources, fetchLeads, setAdminToken as setAirtableToken } from './services/airtableService';
 import { setAdminToken as setAIAdminToken } from './services/aiService';
-import { Loader2, AlertCircle } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 
 function App() {
   // Par défaut, on affiche la landing page pour le public
   const [activeView, setActiveView] = useState('landing-page');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   
   const [data, setData] = useState({
     signals: [],
@@ -73,6 +75,11 @@ function App() {
     setActiveView('overview');
   };
 
+  const handleViewChange = (view) => {
+    setActiveView(view);
+    setIsMenuOpen(false); // Ferme le menu sur mobile après sélection
+  };
+
   // Déterminer si on doit afficher le Sidebar (uniquement en admin authentifié)
   const showSidebar = activeView !== 'landing-page' && isAuthenticated;
 
@@ -114,8 +121,18 @@ function App() {
 
   return (
     <div className={`workspace-layout ${!showSidebar ? 'full-width' : ''}`}>
-      {showSidebar && <Sidebar activeView={activeView} onViewChange={setActiveView} onLogout={() => setIsAuthenticated(false)} />}
-      <main className="workspace-main" style={{ paddingLeft: !showSidebar ? 0 : 'var(--sidebar-width)' }}>
+      {showSidebar && (
+        <>
+          <Navbar isMenuOpen={isMenuOpen} onToggleMenu={() => setIsMenuOpen(!isMenuOpen)} />
+          <Sidebar 
+            activeView={activeView} 
+            onViewChange={handleViewChange} 
+            onLogout={() => setIsAuthenticated(false)} 
+            isOpen={isMenuOpen}
+          />
+        </>
+      )}
+      <main className="workspace-main">
         {renderView()}
       </main>
     </div>

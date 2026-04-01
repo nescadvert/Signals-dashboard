@@ -68,7 +68,7 @@ export default function LeadsView({ leads, onRefresh }) {
   };
 
   return (
-    <div className="workspace-view-dual">
+    <div className={`workspace-view-dual ${selectedLeadId ? 'show-detail' : 'show-list'}`}>
       <div className="view-list-container">
         <header className="view-header">
           <div className="header-info">
@@ -83,13 +83,9 @@ export default function LeadsView({ leads, onRefresh }) {
               <Search size={18} />
               <input type="text" placeholder="Search leads..." />
             </div>
-            <button className="btn btn-secondary">
-              <Filter size={18} />
-              <span>Filters</span>
-            </button>
           </div>
 
-          <div className="leads-table-wrapper">
+          <div className="data-table-wrapper">
              {leads.length === 0 ? (
                 <div className="empty-state">No leads tracked in your Airtable base yet.</div>
              ) : (
@@ -97,9 +93,8 @@ export default function LeadsView({ leads, onRefresh }) {
                   <thead>
                     <tr>
                       <th>Lead Name</th>
-                      <th>Company</th>
                       <th>Status</th>
-                      <th>Follow-up</th>
+                      <th className="desktop-only">Follow-up</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -112,21 +107,18 @@ export default function LeadsView({ leads, onRefresh }) {
                         <td>
                            <div className="lead-name-cell">
                              <div className="lead-avatar">{lead.name.charAt(0)}</div>
-                             <span>{lead.name}</span>
+                             <div>
+                               <div className="source-name-bold">{lead.name}</div>
+                               <div className="row-sub-type">{lead.company || 'Private'}</div>
+                             </div>
                            </div>
-                        </td>
-                        <td>
-                          <div className="company-info-cell">
-                            <Building2 size={14} />
-                            <span>{lead.company || 'Private'}</span>
-                          </div>
                         </td>
                         <td>
                            <span className={`status-pill ${getStatusClass(lead.status)}`}>
                              {lead.status}
                            </span>
                         </td>
-                        <td>
+                        <td className="desktop-only">
                           <div className="follow-up-cell">
                             <Calendar size={14} />
                             <span>{lead.nextFollowUp || 'TBD'}</span>
@@ -142,6 +134,15 @@ export default function LeadsView({ leads, onRefresh }) {
       </div>
 
       <div className="view-detail-panel">
+        {selectedLeadId && (
+          <button 
+            className="btn btn-secondary mobile-only" 
+            onClick={() => setSelectedLeadId(null)}
+            style={{ marginBottom: '1rem', display: 'none' }}
+          >
+            ← Back to List
+          </button>
+        )}
         {selectedLead ? (
           <div className="lead-detail-workspace">
              <header className="lead-detail-header">
@@ -293,7 +294,7 @@ function LeadModal({ onClose, onSubmit, initialData }) {
         </div>
         
         <form onSubmit={handleSubmit} className="modal-form">
-          <div className="modal-scroll-area" style={{ maxHeight: '70vh', overflowY: 'auto', padding: '1rem' }}>
+          <div className="modal-scroll-area" style={{ maxHeight: '70vh', overflowY: 'auto' }}>
             <div className="ai-grid-two-col">
               <div className="form-group">
                 <label>First Name</label>

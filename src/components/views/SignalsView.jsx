@@ -333,7 +333,7 @@ export default function SignalsView({ signals, sources = [], onRefresh }) {
         </div>
       </header>
       
-      <div className="workspace-view-dual">
+      <div className={`workspace-view-dual ${selectedSignalId ? 'show-detail' : 'show-list'}`}>
         <div className="view-list-container sidebar-style">
           <FiltersBar filters={filters} setFilters={setFilters} signals={signals} />
           <SignalList 
@@ -344,6 +344,15 @@ export default function SignalsView({ signals, sources = [], onRefresh }) {
         </div>
         
         <div className="view-detail-panel">
+          {selectedSignalId && (
+            <button 
+              className="btn btn-secondary mobile-only" 
+              onClick={() => setSelectedSignalId(null)}
+              style={{ marginBottom: '1rem', display: 'none' }} /* Hidden by default, shown by CSS */
+            >
+              ← Back to List
+            </button>
+          )}
           {selectedSignal ? (
             <SignalDetailPanel 
               signal={selectedSignal} 

@@ -79,15 +79,15 @@ export default function LandingPageView({ signals = [], onSwitchToAdmin }) {
   return (
     <div className="view-container" style={{ background: 'var(--bg-workspace)', color: 'white', overflowY: 'auto' }}>
       {/* Hero Section */}
-      <section style={{ padding: '6rem 4rem', textAlign: 'center', background: 'radial-gradient(circle at top, var(--accent-soft) 0%, transparent 70%)', position: 'relative' }}>
+      <section className="hero-section" style={{ textAlign: 'center', background: 'radial-gradient(circle at top, var(--accent-soft) 0%, transparent 70%)', position: 'relative' }}>
          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(255,255,255,0.05)', padding: '8px 16px', borderRadius: '24px', border: '1px solid var(--border-subtle)', marginBottom: '2rem' }}>
           <Sparkles size={16} className="text-accent" />
           <span style={{ fontSize: '0.85rem', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Intelligence de Leads par IA</span>
         </div>
-        <h1 style={{ fontSize: '3.8rem', fontWeight: '800', lineHeight: '1.1', marginBottom: '1.5rem', maxWidth: '950px', margin: '0 auto 1.5rem', letterSpacing: '-0.02em' }}>
+        <h1 style={{ fontWeight: '800', lineHeight: '1.1', marginBottom: '1.5rem', maxWidth: '950px', margin: '0 auto 1.5rem', letterSpacing: '-0.02em' }}>
           Identifiez vos futurs clients sur <span className="text-accent">LinkedIn</span> chaque jour, automatiquement.
         </h1>
-        <p style={{ fontSize: '1.25rem', color: 'var(--text-muted)', maxWidth: '750px', margin: '0 auto 3rem' }}>
+        <p style={{ color: 'var(--text-muted)', maxWidth: '750px', margin: '0 auto 3rem' }}>
           Gagnez des heures de recherche manuelle et concentrez-vous sur la vente avec notre système de détection et qualification de leads automatisé.
         </p>
         <a href="#demo-form" style={{ textDecoration: 'none' }}>
@@ -98,13 +98,13 @@ export default function LandingPageView({ signals = [], onSwitchToAdmin }) {
       </section>
 
       {/* Live Demo Section */}
-      <section style={{ padding: '4rem 2rem', maxWidth: '1100px', margin: '0 auto' }}>
+      <section style={{ maxWidth: '1100px', margin: '0 auto' }}>
         <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
-          <h2 style={{ fontSize: '2.25rem', marginBottom: '1rem' }}>Démonstration en temps réel</h2>
+          <h2 style={{ marginBottom: '1rem' }}>Démonstration en temps réel</h2>
           <p style={{ color: 'var(--text-muted)' }}>Exemples de signaux "Hot" détectés aujourd'hui par l'agent IA (Anonymisés)</p>
         </div>
         
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1.5rem' }}>
+        <div className="grid-3" style={{ display: 'grid', gap: '1.5rem' }}>
           {displaySignals.length > 0 ? (
             displaySignals.map((sig, idx) => (
               <div key={idx} style={{ background: 'var(--bg-card)', border: '1px solid var(--border-subtle)', borderRadius: '18px', padding: '1.5rem', boxShadow: 'var(--shadow-sm)', position: 'relative', overflow: 'hidden' }}>
@@ -139,10 +139,10 @@ export default function LandingPageView({ signals = [], onSwitchToAdmin }) {
       </section>
 
       {/* Benefits Section */}
-      <section style={{ padding: '6rem 4rem', background: 'var(--bg-card)', marginTop: '4rem' }}>
-        <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '5rem', alignItems: 'center' }}>
+      <section style={{ background: 'var(--bg-card)', marginTop: '4rem' }}>
+        <div className="grid-2-to-1" style={{ maxWidth: '1200px', margin: '0 auto', display: 'grid', alignItems: 'center' }}>
           <div>
-            <h2 style={{ fontSize: '2.8rem', lineHeight: '1.2', marginBottom: '2.5rem' }}>Reprenez le contrôle de votre <span className="text-accent">pipeline commercial.</span></h2>
+            <h2 style={{ lineHeight: '1.2', marginBottom: '2.5rem' }}>Reprenez le contrôle de votre <span className="text-accent">pipeline commercial.</span></h2>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
               {[
                 { title: "Libérez votre temps", desc: "Remplacez des heures de veille manuelle par une revue quotidienne de 10 minutes." },
@@ -176,7 +176,7 @@ export default function LandingPageView({ signals = [], onSwitchToAdmin }) {
                 </div>
              </div>
              {/* Floating badge */}
-             <div style={{ position: 'absolute', top: '-15px', right: '-15px', background: 'var(--accent-color)', color: 'white', padding: '14px 24px', borderRadius: '14px', fontWeight: '800', boxShadow: 'var(--shadow-glow)', animation: 'pulse 2s infinite' }}>
+             <div className="floating-badge-ia" style={{ position: 'absolute', top: '-15px', right: '-15px', background: 'var(--accent-color)', color: 'white', padding: '14px 24px', borderRadius: '14px', fontWeight: '800', boxShadow: 'var(--shadow-glow)', animation: 'pulse 2s infinite' }}>
                 LEAD QUALIFIÉ PAR IA
              </div>
           </div>
@@ -184,12 +184,12 @@ export default function LandingPageView({ signals = [], onSwitchToAdmin }) {
       </section>
 
       {/* Contact Form Section */}
-      <section id="demo-form" style={{ padding: '8rem 2rem', textAlign: 'center', maxWidth: '800px', margin: '0 auto' }}>
-        <h2 style={{ fontSize: '3rem', marginBottom: '1rem' }}>Prêt à automatiser votre croissance ?</h2>
-        <p style={{ color: 'var(--text-muted)', marginBottom: '3rem', fontSize: '1.1rem' }}>Remplissez le formulaire ci-dessous pour recevoir une démonstration gratuite.</p>
+      <section id="demo-form" style={{ textAlign: 'center', maxWidth: '800px', margin: '0 auto' }}>
+        <h2 style={{ marginBottom: '1rem' }}>Prêt à automatiser votre croissance ?</h2>
+        <p style={{ color: 'var(--text-muted)', marginBottom: '3rem' }}>Remplissez le formulaire ci-dessous pour recevoir une démonstration gratuite.</p>
         
         <form onSubmit={handleSubmit} style={{ background: 'var(--bg-card)', padding: '3rem', borderRadius: '24px', border: '1px solid var(--border-subtle)', textAlign: 'left', boxShadow: 'var(--shadow-lg)' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem', marginBottom: '1.5rem' }}>
+          <div className="grid-2-to-1" style={{ display: 'grid', marginBottom: '1.5rem' }}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
               <label style={{ fontSize: '0.85rem', fontWeight: '600', color: 'var(--text-muted)' }}>Nom complet</label>
               <input 

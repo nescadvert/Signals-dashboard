@@ -39,7 +39,7 @@ export default function StrategyView() {
         </div>
       </header>
 
-      <div className="view-content" style={{ display: 'grid', gridTemplateColumns: '1fr 350px', gap: '2rem' }}>
+      <div className="view-content grid-2-to-1" style={{ display: 'grid', gap: '2rem' }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
           {strategySections.map((section, idx) => (
             <div key={idx} className="chart-panel" style={{ background: 'var(--bg-card)', borderColor: 'var(--border-subtle)' }}>
@@ -62,7 +62,7 @@ export default function StrategyView() {
                   </ul>
                 )}
                 {section.subPoints && (
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem', marginTop: '1rem' }}>
+                  <div className="grid-3" style={{ display: 'grid', gap: '1rem', marginTop: '1rem' }}>
                     {section.subPoints.map((sp, i) => (
                       <div key={i} style={{ background: 'rgba(255,255,255,0.03)', padding: '1rem', borderRadius: '8px', border: '1px solid var(--border-subtle)' }}>
                         <span className={`badge level-${sp.label.toLowerCase()}`} style={{ marginBottom: '8px', display: 'inline-block' }}>{sp.label}</span>
@@ -82,24 +82,24 @@ export default function StrategyView() {
                   <h3 style={{ color: 'var(--text-primary)' }}>Calendrier d'Implémentation</h3>
                 </div>
               </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', position: 'relative', padding: '1rem 0' }}>
-                <div style={{ textAlign: 'center', zIndex: 1 }}>
+               <div style={{ display: 'flex', justifyContent: 'space-between', position: 'relative', padding: '1rem 0', flexWrap: 'wrap', gap: '1.5rem' }}>
+                <div style={{ textAlign: 'center', zIndex: 1, minWidth: '80px', flex: '1' }}>
                   <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'var(--accent-color)', margin: '0 auto 8px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontWeight: 'bold' }}>1</div>
                   <p style={{ fontSize: '0.8rem', color: 'var(--text-primary)' }}>Accès & Audit</p>
                 </div>
-                <div style={{ textAlign: 'center', zIndex: 1 }}>
+                <div style={{ textAlign: 'center', zIndex: 1, minWidth: '80px', flex: '1' }}>
                   <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'var(--accent-color)', margin: '0 auto 8px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontWeight: 'bold' }}>2</div>
                   <p style={{ fontSize: '0.8rem', color: 'var(--text-primary)' }}>Construction Workflow</p>
                 </div>
-                <div style={{ textAlign: 'center', zIndex: 1 }}>
+                <div style={{ textAlign: 'center', zIndex: 1, minWidth: '80px', flex: '1' }}>
                   <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'var(--accent-color)', margin: '0 auto 8px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontWeight: 'bold' }}>3</div>
                   <p style={{ fontSize: '0.8rem', color: 'var(--text-primary)' }}>Calibration IA</p>
                 </div>
-                <div style={{ textAlign: 'center', zIndex: 1 }}>
+                <div style={{ textAlign: 'center', zIndex: 1, minWidth: '80px', flex: '1' }}>
                    <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'var(--accent-color)', margin: '0 auto 8px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontWeight: 'bold' }}>4</div>
                   <p style={{ fontSize: '0.8rem', color: 'var(--text-primary)' }}>Lancement & Formation</p>
                 </div>
-                <div style={{ position: 'absolute', top: '26px', left: '10%', right: '10%', height: '2px', background: 'rgba(255,255,255,0.1)', zIndex: 0 }}></div>
+                <div className="desktop-only" style={{ position: 'absolute', top: '26px', left: '10%', right: '10%', height: '2px', background: 'rgba(255,255,255,0.1)', zIndex: 0 }}></div>
               </div>
               <p style={{ textAlign: 'center', fontSize: '0.85rem', color: 'var(--accent-color)', marginTop: '1rem' }}>Livraison sous 5 jours ouvrés</p>
           </div>
