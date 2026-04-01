@@ -42,7 +42,7 @@ export default function SignalDetailPanel({ signal, onStatusUpdate, onAIAnalysis
       console.log('AI Analysis completed successfully.');
     } catch (err) {
       console.error('SignalDetailPanel AI Error:', err);
-      alert(`Erreur d'analyse AI : ${err.message}`);
+      alert(`--- ALERTE DEBUG --- : ${err.message}`);
     } finally {
       console.log('Resetting loading state.');
       setIsGeneratingAI(false);
