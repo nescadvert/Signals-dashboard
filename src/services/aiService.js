@@ -29,20 +29,20 @@ export const generateSignalAnalysis = async (signal, retryCount = 1) => {
   // En PRODUCTION (Vercel), on utilise le Pont Sécurisé pour cacher la clé API OpenAI
   if (import.meta.env.PROD) {
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 15000); // 15s timeout
+    const timeoutId = setTimeout(() => controller.abort(), 20000); // Augmenté à 20s
 
     try {
-      console.log('AI Analysis: Starting production request...');
+      console.log('--- AI DEBUG START ---');
       const response = await fetch('/api/ai-proxy', {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',
-          'x-admin-password': adminToken
+          'x-admin-password': adminToken || 'MISSING_TOKEN'
         },
         signal: controller.signal,
         body: JSON.stringify({ 
           prompt, 
-          systemMessage: 'You are a professional sales auditor. Output only valid JSON. Be conservative and skeptical.',
+          systemMessage: 'You are a professional sales auditor. Output only valid JSON.',
           temperature: 0.3
         })
       });
@@ -50,25 +50,35 @@ export const generateSignalAnalysis = async (signal, retryCount = 1) => {
       clearTimeout(timeoutId);
 
       if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        const errorMessage = errorData.error?.message || errorData.error || `Erreur d'accès à l'IA (${response.status})`;
-        throw new Error(typeof errorMessage === 'string' ? errorMessage : JSON.stringify(errorMessage));
+        const status = response.status;
+        const text = await response.text().catch(() => 'No response body');
+        console.error(`AI Proxy Error Details: Status ${status}, Body: ${text}`);
+        
+        let parsedError = text;
+        try {
+          const json = JSON.parse(text);
+          parsedError = json.error?.message || json.error || text;
+        } catch (e) {}
+
+        throw new Error(`[Status ${status}] ${typeof parsedError === 'string' ? parsedError : JSON.stringify(parsedError)}`);
       }
 
       const data = await response.json();
+      console.log('AI Proxy Success Data received');
       const content = data.choices[0].message.content;
-      console.log('AI Analysis: Success, parsing content...');
       return JSON.parse(content);
     } catch (error) {
       clearTimeout(timeoutId);
-      console.error('AI Analysis Fetch Error:', error.name === 'AbortError' ? 'Timeout (15s)' : error.message);
+      const isTimeout = error.name === 'AbortError';
+      const msg = isTimeout ? 'Le serveur a mis trop de temps à répondre (Timeout 20s)' : error.message;
+      console.error('AI Analysis Critical Error:', msg);
       
-      if (retryCount > 0 && error.name !== 'AbortError') {
-        console.log(`AI Analysis: Retrying... (${retryCount} attempts left)`);
+      if (retryCount > 0 && !isTimeout) {
+        console.log('Retrying analysis...');
         await new Promise(resolve => setTimeout(resolve, 2000));
         return generateSignalAnalysis(signal, retryCount - 1);
       }
-      throw error;
+      throw new Error(msg);
     }
   }
 
