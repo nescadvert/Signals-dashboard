@@ -169,6 +169,48 @@ body {
   border-color: var(--accent-color);
 }
 
+/* Responsive Grid for Features */
+.feature-grid-responsive {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6rem;
+  align-items: center;
+}
+
+@media (max-width: 900px) {
+  .feature-grid-responsive {
+    grid-template-columns: 1fr;
+    gap: 4rem;
+    text-align: center;
+  }
+  
+  .feature-text-block h3, .feature-text-block p {
+    text-align: left;
+  }
+
+  .hide-mobile {
+    display: none !important;
+  }
+  
+  .landing-hero {
+    padding: 6rem 1.5rem 4rem !important;
+  }
+  
+  .landing-hero h1 {
+    font-size: 2.5rem !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .grid-2-to-1 {
+    grid-template-columns: 1fr !important;
+  }
+  
+  .demo-card-v2 {
+    padding: 1rem !important;
+  }
+}
+
 /* Sidebar Styling */
 .sidebar-brand {
   padding: 1.5rem;

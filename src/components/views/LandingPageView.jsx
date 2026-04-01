@@ -20,22 +20,23 @@ export default function LandingPageView({ signals = [], onSwitchToAdmin }) {
     }
   }, [signals]);
 
-  // Filter and anonymize
+  // Filter and anonymize (Roles only)
   const displaySignals = signals.length > 0
     ? signals
         .filter(s => s.level === 'Hot')
         .slice(0, 3)
         .map(s => {
-          const parts = (s.author || 'Prospect').trim().split(' ');
+          // Use hardcoded generic roles if no businessModelType
+          const role = s.businessModelType ? (`Décideur ${s.businessModelType}`) : "Fondateur / CEO";
           return {
-            author: parts.length > 1 ? `${parts[0]} ${parts[parts.length-1][0]}.` : parts[0],
+            author: role,
             postText: s.postText,
             finalScore: s.finalScore,
             businessModelType: s.businessModelType,
             displayDate: new Date(s.date).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' })
           };
         })
-    : demoSignals;
+    : demoSignals.map(s => ({...s, author: "Brand Manager / CEO"})); // Demo anonymization
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -74,127 +75,129 @@ export default function LandingPageView({ signals = [], onSwitchToAdmin }) {
   }
 
   return (
-    <div className="view-container" style={{ background: 'var(--bg-workspace)', color: 'white', overflowY: 'auto', scrollBehavior: 'smooth' }}>
+    <div className="view-container landing-page-wrapper" style={{ background: 'var(--bg-workspace)', color: 'white', overflowY: 'auto', scrollBehavior: 'smooth' }}>
       
       {/* Premium Hero Section */}
-      <section className="landing-hero">
+      <section className="landing-hero" style={{ padding: 'clamp(5rem, 15vh, 8rem) 1.5rem' }}>
         <div className="hero-glow" />
         
         <div style={{ display: 'inline-flex', alignItems: 'center', gap: '10px', background: 'rgba(255,255,255,0.03)', padding: '10px 20px', borderRadius: '30px', border: '1px solid rgba(255,255,255,0.08)', marginBottom: '3.5rem', backdropFilter: 'blur(5px)' }}>
           <Sparkles size={18} style={{ color: 'var(--accent-color)' }} />
-          <span style={{ fontSize: '0.9rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Intelligence Commerciale 2.0</span>
+          <span style={{ fontSize: '0.8rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Intelligence Commerciale 2.0</span>
         </div>
 
         <h1 className="text-gradient">
           Identifiez vos futurs clients sur LinkedIn & Instagram.
         </h1>
-        <p>
+        <p style={{ marginBottom: '3.5rem' }}>
           Détectez automatiquement les intentions d'achat les plus chaudes. Libérez votre équipe commerciale des recherches manuelles ingrates.
         </p>
 
-        <div style={{ display: 'flex', gap: '20px', justifyContent: 'center', flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
           <a href="#demo-form" style={{ textDecoration: 'none' }}>
-            <button style={{ background: 'var(--accent-color)', color: 'white', padding: '20px 40px', borderRadius: '18px', border: 'none', fontWeight: '800', fontSize: '1.2rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '12px', boxShadow: '0 10px 40px -10px var(--accent-glow)' }}>
-              Réserver ma Démonstration <ArrowRight size={22} />
+            <button style={{ background: 'var(--accent-color)', color: 'white', padding: '18px 32px', borderRadius: '16px', border: 'none', fontWeight: '800', fontSize: '1.1rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '10px', boxShadow: '0 10px 40px -10px var(--accent-glow)' }}>
+              Réserver ma Démonstration <ArrowRight size={20} />
             </button>
           </a>
-          <button onClick={onSwitchToAdmin} style={{ background: 'rgba(255,255,255,0.05)', color: 'white', padding: '20px 40px', borderRadius: '18px', border: '1px solid rgba(255,255,255,0.1)', fontWeight: '600', fontSize: '1.2rem', cursor: 'pointer' }}>
+          <button onClick={onSwitchToAdmin} style={{ background: 'rgba(255,255,255,0.05)', color: 'white', padding: '18px 32px', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.1)', fontWeight: '600', fontSize: '1.1rem', cursor: 'pointer' }}>
             Accès Staff
           </button>
         </div>
 
         {/* Social Proof Bar */}
-        <div style={{ marginTop: '5rem', display: 'flex', justifyContent: 'center', gap: '40px', opacity: 0.4, flexWrap: 'wrap' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><Linkedin size={20}/> LinkedIn </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><Instagram size={20}/> Instagram</div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><Globe size={20}/> Google Search</div>
+        <div style={{ marginTop: '5rem', display: 'flex', justifyContent: 'center', gap: '30px', opacity: 0.4, flexWrap: 'wrap', fontSize: '0.9rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><Linkedin size={18}/> LinkedIn </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><Instagram size={18}/> Instagram</div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><Globe size={18}/> Google Search</div>
         </div>
       </section>
 
-      {/* Real-Time Demo (Premium Grid) */}
-      <section style={{ maxWidth: '1200px', margin: '6rem auto 10rem', padding: '0 2rem' }}>
-        <div style={{ textAlign: 'center', marginBottom: '5rem' }}>
-          <span style={{ color: 'var(--accent-color)', fontWeight: '800', fontSize: '1.1rem', marginBottom: '1rem', display: 'block' }}>Flux en temps réel</span>
-          <h2 style={{ fontSize: '3rem', fontWeight: '900', letterSpacing: '-0.02em', marginBottom: '1.5rem' }}>L'Agent IA en action</h2>
-          <p style={{ color: 'var(--text-muted)', fontSize: '1.2rem' }}>Derniers signaux "Hot" identifiés par notre algorithme propriétaire.</p>
+      {/* Real-Time Demo (Redesigned Grid) */}
+      <section style={{ maxWidth: '1200px', margin: '6rem auto', padding: '0 1.5rem' }}>
+        <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
+          <span style={{ color: 'var(--accent-color)', fontWeight: '800', fontSize: '1rem', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '1rem', display: 'block' }}>Flux en temps réel</span>
+          <h2 style={{ fontSize: 'clamp(2rem, 5vw, 3rem)', fontWeight: '900', letterSpacing: '-0.02em', marginBottom: '1.5rem' }}>L'Agent IA en action</h2>
+          <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem' }}>Signaux hautement qualifiés (Anonymisation totale des données sensibles).</p>
         </div>
         
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '2rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem' }}>
           {displaySignals.length > 0 ? (
             displaySignals.map((sig, idx) => (
-              <div key={idx} className="demo-card-v2" style={{ position: 'relative' }}>
-                <div style={{ position: 'absolute', top: '15px', right: '15px', padding: '6px 12px', background: 'var(--accent-soft)', color: 'var(--accent-color)', borderRadius: '8px', fontSize: '0.75rem', fontWeight: '900' }}>
-                  QUALIFIÉ HOT
+              <div key={idx} className="demo-card-v2" style={{ position: 'relative', overflow: 'hidden' }}>
+                <div style={{ position: 'absolute', top: '15px', right: '15px', padding: '4px 10px', background: 'var(--accent-soft)', color: 'var(--accent-color)', borderRadius: '6px', fontSize: '0.65rem', fontWeight: '900' }}>
+                  HOT LEAD
                 </div>
                 
                 <div style={{ display: 'flex', alignItems: 'center', gap: '15px', marginBottom: '1.5rem' }}>
-                  <div style={{ width: '48px', height: '48px', borderRadius: '16px', background: 'linear-gradient(135deg, #6366f1, #a855f7)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <Users size={24} color="white" />
+                  <div style={{ width: '44px', height: '44px', borderRadius: '12px', background: 'linear-gradient(135deg, #6366f1, #a855f7)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                    <Users size={20} color="white" />
                   </div>
                   <div>
-                    <div style={{ fontWeight: '800', fontSize: '1rem' }}>{sig.author}</div>
-                    <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Identifié le {sig.displayDate}</div>
+                    <div style={{ fontWeight: '800', fontSize: '0.95rem' }}>{sig.author}</div>
+                    <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Détecté le {sig.displayDate}</div>
                   </div>
                 </div>
 
-                <div style={{ background: 'rgba(255,255,255,0.03)', padding: '1.2rem', borderRadius: '12px', marginBottom: '1.5rem', border: '1px solid rgba(255,255,255,0.05)' }}>
-                  <p style={{ fontSize: '0.95rem', color: 'var(--text-sidebar)', lineHeight: '1.6', fontStyle: 'italic' }}>
+                <div style={{ background: 'rgba(255,255,255,0.02)', padding: '1rem', borderRadius: '12px', marginBottom: '1.5rem', border: '1px solid rgba(255,255,255,0.04)' }}>
+                  <p style={{ 
+                      fontSize: '0.9rem', color: 'var(--text-sidebar)', lineHeight: '1.5', fontStyle: 'italic',
+                      display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' 
+                  }}>
                     "{sig.postText}"
                   </p>
                 </div>
 
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '1rem' }}>
                   <div>
-                    <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginBottom: '4px' }}>FIABILITÉ IA</div>
-                    <div style={{ fontSize: '1.3rem', fontWeight: '900', color: 'var(--accent-color)' }}>{sig.finalScore}%</div>
+                    <div style={{ fontSize: '1.5rem', fontWeight: '950', color: 'var(--accent-color)', lineHeight: '1' }}>{sig.finalScore}%</div>
+                    <div style={{ fontSize: '0.65rem', color: 'var(--text-muted)', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Score IA</div>
                   </div>
                   <div style={{ textAlign: 'right' }}>
-                    <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginBottom: '4px' }}>SEGMENT</div>
-                    <div style={{ fontSize: '0.9rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{sig.businessModelType || 'Produit'}</div>
+                    <div style={{ fontSize: '0.85rem', fontWeight: '700', textTransform: 'uppercase', color: 'var(--text-primary)' }}>{sig.businessModelType || 'Produit'}</div>
+                    <div style={{ fontSize: '0.65rem', color: 'var(--text-muted)' }}>Segment</div>
                   </div>
                 </div>
               </div>
             ))
           ) : (
-            <div style={{ gridColumn: '1 / -1', padding: '5rem', textAlign: 'center', borderRadius: '24px', border: '2px dashed rgba(255,255,255,0.05)' }}>
-              <Loader2 className="animate-spin" size={48} style={{ opacity: 0.2, margin: '0 auto 1rem' }} />
-              <p style={{ color: 'var(--text-muted)', fontSize: '1.2rem' }}>Connexion aux serveurs Nesc'Advert...</p>
+            <div style={{ gridColumn: '1 / -1', padding: '4rem', textAlign: 'center', borderRadius: '24px', border: '2px dashed rgba(255,255,255,0.05)' }}>
+              <Loader2 className="animate-spin" size={40} style={{ opacity: 0.2, margin: '0 auto 1rem' }} />
+              <p style={{ color: 'var(--text-muted)' }}>Chargement du flux IA...</p>
             </div>
           )}
         </div>
       </section>
 
-      {/* Feature Showcase Section */}
-      <section style={{ background: 'linear-gradient(180deg, transparent 0%, rgba(0, 173, 239, 0.05) 50%, transparent 100%)', padding: '10rem 0' }}>
-        <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 2rem', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '6rem', alignItems: 'center' }}>
-          <div>
-            <h2 style={{ fontSize: '3.5rem', fontWeight: '900', lineHeight: '1.1', marginBottom: '3rem' }}>
-              Ne laissez plus vos opportunités <span style={{ opacity: 0.5 }}>s'évaporer.</span>
+      {/* Feature Showcase Section - Mobile Optimized */}
+      <section style={{ background: 'linear-gradient(180deg, transparent 0%, rgba(0, 173, 239, 0.05) 50%, transparent 100%)', padding: 'clamp(4rem, 10vh, 10rem) 0' }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 1.5rem' }} className="feature-grid-responsive">
+          <div className="feature-text-block">
+            <h2 style={{ fontSize: 'clamp(2rem, 8vw, 3.5rem)', fontWeight: '900', lineHeight: '1.2', marginBottom: '2.5rem' }}>
+              Ne laissez plus vos opportunités <span style={{ opacity: 0.4 }}>s'évaporer.</span>
             </h2>
             
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '2.5rem' }}>
               {[
                 { icon: <Zap color="#ef4444"/>, title: "Détection Instantanée", desc: "Soyez le premier au courant quand un prospect exprime un besoin." },
                 { icon: <ShieldCheck color="#10b981"/>, title: "Qualification de Précision", desc: "Notre IA filtre 95% du 'bruit' pour ne garder que les prospects les plus qualifiés pour votre activité." },
                 { icon: <MessageSquare color="#00ADEF"/>, title: "Messages Personnalisés", desc: "Des scripts LinkedIn/Instagram générés spécifiquement pour chaque post détecté." }
               ].map((feat, idx) => (
-                <div key={idx} style={{ display: 'flex', gap: '2rem' }}>
-                  <div style={{ width: '56px', height: '56px', borderRadius: '18px', background: 'rgba(255,255,255,0.03)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                <div key={idx} style={{ display: 'flex', gap: '1.5rem' }}>
+                  <div style={{ width: '48px', height: '48px', borderRadius: '14px', background: 'rgba(255,255,255,0.03)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                     {feat.icon}
                   </div>
                   <div>
-                    <h3 style={{ fontSize: '1.4rem', fontWeight: '800', marginBottom: '10px' }}>{feat.title}</h3>
-                    <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem', lineHeight: '1.6' }}>{feat.desc}</p>
+                    <h3 style={{ fontSize: '1.2rem', fontWeight: '800', marginBottom: '6px' }}>{feat.title}</h3>
+                    <p style={{ color: 'var(--text-muted)', fontSize: '1rem', lineHeight: '1.5' }}>{feat.desc}</p>
                   </div>
                 </div>
               ))}
             </div>
           </div>
 
-          <div style={{ position: 'relative' }}>
-             <div className="glass-surface" style={{ borderRadius: '32px', padding: '1rem', boxShadow: '0 50px 100px -20px rgba(0,0,0,0.8)', overflow: 'hidden' }}>
-                <div style={{ width: '100%', borderRadius: '20px', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.05)', background: '#000' }}>
-                   {/* Vidéo de démo interface */}
+          <div style={{ position: 'relative' }} className="feature-video-block">
+             <div className="glass-surface" style={{ borderRadius: '24px', padding: '0.75rem', boxShadow: '0 40px 100px -20px rgba(0,0,0,0.8)', overflow: 'hidden' }}>
+                <div style={{ width: '100%', borderRadius: '16px', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.05)', background: '#000' }}>
                    <img 
                     src="/video/dashboard-demo.webp" 
                     alt="Interface Demo" 
@@ -202,9 +205,9 @@ export default function LandingPageView({ signals = [], onSwitchToAdmin }) {
                    />
                 </div>
              </div>
-             {/* Dynamic Floatings */}
-             <div style={{ position: 'absolute', top: '5%', right: '-40px', background: '#10b981', color: 'white', padding: '14px 24px', borderRadius: '14px', fontWeight: '900', boxShadow: '0 10px 30px rgba(16,185,129,0.4)', zIndex: 2 }}>98% IA MATCH</div>
-             <div style={{ position: 'absolute', bottom: '10%', left: '-30px', background: '#00ADEF', color: 'white', padding: '14px 24px', borderRadius: '14px', fontWeight: '900', boxShadow: '0 10px 30px rgba(0,173,239,0.4)', zIndex: 2 }}>LEAD CHAUD</div>
+             {/* Dynamic Floatings (Hidden on small mobile) */}
+             <div className="floating-badge-ia hide-mobile" style={{ position: 'absolute', top: '5%', right: '-30px', background: '#10b981', color: 'white', padding: '10px 18px', borderRadius: '12px', fontWeight: '900', boxShadow: '0 10px 30px rgba(16,185,129,0.4)', zIndex: 2, fontSize: '0.8rem' }}>98% IA MATCH</div>
+             <div className="floating-badge-ia hide-mobile" style={{ position: 'absolute', bottom: '15%', left: '-25px', background: '#00ADEF', color: 'white', padding: '10px 18px', borderRadius: '12px', fontWeight: '900', boxShadow: '0 10px 30px rgba(0,173,239,0.4)', zIndex: 2, fontSize: '0.8rem' }}>LEAD CHAUD</div>
           </div>
         </div>
       </section>
