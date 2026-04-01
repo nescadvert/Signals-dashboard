@@ -36,8 +36,13 @@ export default function SignalDetailPanel({ signal, onStatusUpdate, onAIAnalysis
 
   const handleRunAI = async () => {
     setIsGeneratingAI(true);
-    await onAIAnalysis(signal.id);
-    setIsGeneratingAI(false);
+    try {
+      await onAIAnalysis(signal.id);
+    } catch (err) {
+      alert(`Erreur d'analyse AI : ${err.message}`);
+    } finally {
+      setIsGeneratingAI(false);
+    }
   };
 
   const handleDelete = async () => {

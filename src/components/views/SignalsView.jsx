@@ -108,29 +108,12 @@ export default function SignalsView({ signals, sources = [], onRefresh }) {
           successCount++;
         }
       } catch (err) {
-        console.warn(`Cleaning up failed signal ${currentSignal.id}:`, err.message);
-        
-        // AUTO CLEANUP: 
-        // 1. Mark as Error (Status field in Airtable must have 'Error' option!)
-        // 2. Archive & Delete
-        try {
-          await updateSignalStatus(currentSignal.id, 'Error');
-          await archiveSignal({ ...currentSignal, status: 'Error' });
-          await deleteSignal(currentSignal.id);
-          
-          errors.push({
-            author: currentSignal.author,
-            error: `${err.message} (Auto-archivé)`,
-            isCleanedUp: true
-          });
-        } catch (cleanupErr) {
-          console.error(`Failed to auto-cleanup ${currentSignal.id}:`, cleanupErr);
-          errors.push({
-            author: currentSignal.author,
-            error: `${err.message} (Echec du nettoyage)`,
-            isCleanedUp: false
-          });
-        }
+        console.error(`AI Analysis failed for ${currentSignal.id}:`, err.message);
+        errors.push({
+          author: currentSignal.author,
+          error: err.message || 'Unknown error',
+          isCleanedUp: false
+        });
       }
       
       if (i < list.length - 1) {
