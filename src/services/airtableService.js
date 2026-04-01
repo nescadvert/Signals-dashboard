@@ -279,11 +279,11 @@ export const updateSignalAnalysis = async (recordId, analysis, level) => {
   const path = `/${encodeURIComponent(TABLE_NAME)}/${recordId}`;
   
   // SANITIZE: AI tags
-  const safeTags = Array.isArray(analysis.signals_detected) 
-    ? analysis.signals_detected.filter(tag => ALLOWED_SIGNALS.includes(String(tag).toLowerCase())) 
+  const safeTags = Array.isArray(analysis.signalsDetected) 
+    ? analysis.signalsDetected.filter(tag => ALLOWED_SIGNALS.includes(String(tag).toLowerCase())) 
     : [];
 
-  const finalScore = Number(analysis.final_score || 0);
+  const finalScore = Number(analysis.finalScore || 0);
   const isExcluded = analysis.exclusion_flag === true;
   
   // STATUS MAPPING: Force exact strings for Airtable Single-Select
@@ -295,11 +295,11 @@ export const updateSignalAnalysis = async (recordId, analysis, level) => {
     'business_model_type': sanitize(analysis.business_model_type),
     'Signals detected': safeTags,
     'Reason': sanitize(analysis.reason),
-    'Next action': sanitize(analysis.next_action || 'Ignore'),
-    'Suggested DM': sanitize(analysis.suggested_dm || ''),
-    'Suggested Comment': sanitize(analysis.suggested_comment || ''),
-    'Intent score': Number(analysis.fit_score || 0),
-    'Activity score': Number(analysis.activity_score || 0),
+    'Next action': sanitize(analysis.nextAction || 'Ignore'),
+    'Suggested DM': sanitize(analysis.suggestedDM || ''),
+    'Suggested Comment': sanitize(analysis.suggestedComment || ''),
+    'Intent score': Number(analysis.intentScore || 0),
+    'Activity score': Number(analysis.activityScore || 0),
     'Final score': finalScore,
     'Level': level,
     'DM status': (isExcluded || level === 'Cold') ? 'Ignored' : 'Ready',
