@@ -112,8 +112,52 @@ export default function LandingPageView({ signals = [], onSwitchToAdmin }) {
         </div>
       </section>
 
+      {/* Feature Showcase Section - Mobile Optimized */}
+      <section style={{ background: 'linear-gradient(180deg, transparent 0%, rgba(0, 173, 239, 0.05) 50%, transparent 100%)', padding: 'clamp(4rem, 10vh, 10rem) 0' }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 1.5rem' }} className="feature-grid-responsive">
+          <div className="feature-text-block">
+            <h2 style={{ fontSize: 'clamp(2rem, 8vw, 3.5rem)', fontWeight: '900', lineHeight: '1.2', marginBottom: '2.5rem' }}>
+              Ne laissez plus vos opportunités <span style={{ opacity: 0.4 }}>s'évaporer.</span>
+            </h2>
+            
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '2.5rem' }}>
+              {[
+                { icon: <Zap color="#ef4444"/>, title: "Détection Instantanée", desc: "Soyez le premier au courant quand un prospect exprime un besoin." },
+                { icon: <ShieldCheck color="#10b981"/>, title: "Qualification de Précision", desc: "Notre IA filtre 95% du 'bruit' pour ne garder que les prospects les plus qualifiés pour votre activité." },
+                { icon: <MessageSquare color="#00ADEF"/>, title: "Messages Personnalisés", desc: "Des scripts LinkedIn/Instagram générés spécifiquement pour chaque post détecté." }
+              ].map((feat, idx) => (
+                <div key={idx} style={{ display: 'flex', gap: '1.5rem' }}>
+                  <div style={{ width: '48px', height: '48px', borderRadius: '14px', background: 'rgba(255,255,255,0.03)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                    {feat.icon}
+                  </div>
+                  <div>
+                    <h3 style={{ fontSize: '1.2rem', fontWeight: '800', marginBottom: '6px' }}>{feat.title}</h3>
+                    <p style={{ color: 'var(--text-muted)', fontSize: '1rem', lineHeight: '1.5' }}>{feat.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div style={{ position: 'relative' }} className="feature-video-block">
+             <div className="glass-surface" style={{ borderRadius: '24px', padding: '0.75rem', boxShadow: '0 40px 100px -20px rgba(0,0,0,0.8)', overflow: 'hidden' }}>
+                <div style={{ width: '100%', borderRadius: '16px', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.05)', background: '#000' }}>
+                   <img 
+                    src="/video/dashboard-demo.webp" 
+                    alt="Interface Demo" 
+                    style={{ width: '100%', display: 'block' }} 
+                   />
+                </div>
+             </div>
+             {/* Dynamic Floatings (Hidden on small mobile) */}
+             <div className="floating-badge-ia hide-mobile" style={{ position: 'absolute', top: '5%', right: '-30px', background: '#10b981', color: 'white', padding: '10px 18px', borderRadius: '12px', fontWeight: '900', boxShadow: '0 10px 30px rgba(16,185,129,0.4)', zIndex: 2, fontSize: '0.8rem' }}>98% IA MATCH</div>
+             <div className="floating-badge-ia hide-mobile" style={{ position: 'absolute', bottom: '15%', left: '-25px', background: '#00ADEF', color: 'white', padding: '10px 18px', borderRadius: '12px', fontWeight: '900', boxShadow: '0 10px 30px rgba(0,173,239,0.4)', zIndex: 2, fontSize: '0.8rem' }}>LEAD CHAUD</div>
+          </div>
+        </div>
+      </section>
+
       {/* Real-Time Demo (Redesigned Grid) */}
-      <section style={{ maxWidth: '1200px', margin: '6rem auto', padding: '0 1.5rem' }}>
+      <section style={{ maxWidth: '1200px', margin: '4rem auto 8rem', padding: '0 1.5rem' }}>
         <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
           <span style={{ color: 'var(--accent-color)', fontWeight: '800', fontSize: '1rem', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '1rem', display: 'block' }}>Flux en temps réel</span>
           <h2 style={{ fontSize: 'clamp(2rem, 5vw, 3rem)', fontWeight: '900', letterSpacing: '-0.02em', marginBottom: '1.5rem' }}>L'Agent IA en action</h2>
@@ -165,50 +209,6 @@ export default function LandingPageView({ signals = [], onSwitchToAdmin }) {
               <p style={{ color: 'var(--text-muted)' }}>Chargement du flux IA...</p>
             </div>
           )}
-        </div>
-      </section>
-
-      {/* Feature Showcase Section - Mobile Optimized */}
-      <section style={{ background: 'linear-gradient(180deg, transparent 0%, rgba(0, 173, 239, 0.05) 50%, transparent 100%)', padding: 'clamp(4rem, 10vh, 10rem) 0' }}>
-        <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 1.5rem' }} className="feature-grid-responsive">
-          <div className="feature-text-block">
-            <h2 style={{ fontSize: 'clamp(2rem, 8vw, 3.5rem)', fontWeight: '900', lineHeight: '1.2', marginBottom: '2.5rem' }}>
-              Ne laissez plus vos opportunités <span style={{ opacity: 0.4 }}>s'évaporer.</span>
-            </h2>
-            
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '2.5rem' }}>
-              {[
-                { icon: <Zap color="#ef4444"/>, title: "Détection Instantanée", desc: "Soyez le premier au courant quand un prospect exprime un besoin." },
-                { icon: <ShieldCheck color="#10b981"/>, title: "Qualification de Précision", desc: "Notre IA filtre 95% du 'bruit' pour ne garder que les prospects les plus qualifiés pour votre activité." },
-                { icon: <MessageSquare color="#00ADEF"/>, title: "Messages Personnalisés", desc: "Des scripts LinkedIn/Instagram générés spécifiquement pour chaque post détecté." }
-              ].map((feat, idx) => (
-                <div key={idx} style={{ display: 'flex', gap: '1.5rem' }}>
-                  <div style={{ width: '48px', height: '48px', borderRadius: '14px', background: 'rgba(255,255,255,0.03)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                    {feat.icon}
-                  </div>
-                  <div>
-                    <h3 style={{ fontSize: '1.2rem', fontWeight: '800', marginBottom: '6px' }}>{feat.title}</h3>
-                    <p style={{ color: 'var(--text-muted)', fontSize: '1rem', lineHeight: '1.5' }}>{feat.desc}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div style={{ position: 'relative' }} className="feature-video-block">
-             <div className="glass-surface" style={{ borderRadius: '24px', padding: '0.75rem', boxShadow: '0 40px 100px -20px rgba(0,0,0,0.8)', overflow: 'hidden' }}>
-                <div style={{ width: '100%', borderRadius: '16px', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.05)', background: '#000' }}>
-                   <img 
-                    src="/video/dashboard-demo.webp" 
-                    alt="Interface Demo" 
-                    style={{ width: '100%', display: 'block' }} 
-                   />
-                </div>
-             </div>
-             {/* Dynamic Floatings (Hidden on small mobile) */}
-             <div className="floating-badge-ia hide-mobile" style={{ position: 'absolute', top: '5%', right: '-30px', background: '#10b981', color: 'white', padding: '10px 18px', borderRadius: '12px', fontWeight: '900', boxShadow: '0 10px 30px rgba(16,185,129,0.4)', zIndex: 2, fontSize: '0.8rem' }}>98% IA MATCH</div>
-             <div className="floating-badge-ia hide-mobile" style={{ position: 'absolute', bottom: '15%', left: '-25px', background: '#00ADEF', color: 'white', padding: '10px 18px', borderRadius: '12px', fontWeight: '900', boxShadow: '0 10px 30px rgba(0,173,239,0.4)', zIndex: 2, fontSize: '0.8rem' }}>LEAD CHAUD</div>
-          </div>
         </div>
       </section>
 
