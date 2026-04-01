@@ -28,19 +28,26 @@ export const generateSignalAnalysis = async (signal, retryCount = 1) => {
 
   // En PRODUCTION (Vercel), on utilise le Pont Sécurisé pour cacher la clé API OpenAI
   if (import.meta.env.PROD) {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 15000); // 15s timeout
+
     try {
+      console.log('AI Analysis: Starting production request...');
       const response = await fetch('/api/ai-proxy', {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',
           'x-admin-password': adminToken
         },
+        signal: controller.signal,
         body: JSON.stringify({ 
           prompt, 
           systemMessage: 'You are a professional sales auditor. Output only valid JSON. Be conservative and skeptical.',
           temperature: 0.3
         })
       });
+
+      clearTimeout(timeoutId);
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
@@ -49,9 +56,15 @@ export const generateSignalAnalysis = async (signal, retryCount = 1) => {
       }
 
       const data = await response.json();
-      return JSON.parse(data.choices[0].message.content);
+      const content = data.choices[0].message.content;
+      console.log('AI Analysis: Success, parsing content...');
+      return JSON.parse(content);
     } catch (error) {
-      if (retryCount > 0) {
+      clearTimeout(timeoutId);
+      console.error('AI Analysis Fetch Error:', error.name === 'AbortError' ? 'Timeout (15s)' : error.message);
+      
+      if (retryCount > 0 && error.name !== 'AbortError') {
+        console.log(`AI Analysis: Retrying... (${retryCount} attempts left)`);
         await new Promise(resolve => setTimeout(resolve, 2000));
         return generateSignalAnalysis(signal, retryCount - 1);
       }

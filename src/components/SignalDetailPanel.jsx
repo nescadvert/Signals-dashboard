@@ -36,11 +36,15 @@ export default function SignalDetailPanel({ signal, onStatusUpdate, onAIAnalysis
 
   const handleRunAI = async () => {
     setIsGeneratingAI(true);
+    console.log(`Starting AI Analysis for signal ${signal.id}...`);
     try {
       await onAIAnalysis(signal.id);
+      console.log('AI Analysis completed successfully.');
     } catch (err) {
+      console.error('SignalDetailPanel AI Error:', err);
       alert(`Erreur d'analyse AI : ${err.message}`);
     } finally {
+      console.log('Resetting loading state.');
       setIsGeneratingAI(false);
     }
   };
