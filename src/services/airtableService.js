@@ -403,6 +403,35 @@ export const updateDMStatus = async (recordId, newDMStatus) => {
 };
 
 export const triggerScanSignals = async (scanLimit = 50, platform = '', sourceName = '', keywords = '', sourceId = '') => {
+  // En PRODUCTION (Vercel), on utilise le Pont Sécurisé pour ne pas exposer l'URL du Webhook au client
+  if (import.meta.env.PROD) {
+    try {
+      const response = await fetch('/api/trigger-scan', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          adminPassword: adminToken,
+          scanLimit,
+          platform,
+          sourceName,
+          keywords,
+          sourceId
+        })
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || `Erreur de scan (${response.status})`);
+      }
+
+      return true;
+    } catch (error) {
+      console.error('Production Scan Trigger Error:', error);
+      throw error;
+    }
+  }
+
+  // En DÉVELOPPEMENT (Local), on continue en direct sur le Webhook s'il est configuré dans le .env
   if (!MAKE_WEBHOOK_URL) {
     throw new Error('Make Webhook URL is missing. Please check your .env file.');
   }
@@ -414,7 +443,7 @@ export const triggerScanSignals = async (scanLimit = 50, platform = '', sourceNa
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        trigger_source: 'antigravity_dashboard',
+        trigger_source: 'antigravity_dashboard_local',
         timestamp: new Date().toISOString(),
         scan_limit: scanLimit,
         platform: platform,
