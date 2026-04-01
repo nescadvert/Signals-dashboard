@@ -52,6 +52,21 @@ body {
   height: 100%;
 }
 
+@keyframes gradientFlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.text-gradient {
+  background: linear-gradient(90deg, #00ADEF, #6366f1, #a855f7);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradientFlow 5s linear infinite;
+}
+
 @keyframes spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
@@ -97,6 +112,61 @@ body {
   display: flex;
   flex-direction: column;
   background-color: var(--bg-workspace);
+}
+
+.glass-surface {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+.hero-glow {
+  position: absolute;
+  top: -20%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  height: 60%;
+  background: radial-gradient(circle, rgba(0, 173, 239, 0.15) 0%, transparent 70%);
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* Redesign Landing Section */
+.landing-hero {
+  padding: 8rem 2rem 5rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.landing-hero h1 {
+  font-size: clamp(2.5rem, 8vw, 4.5rem);
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  margin-bottom: 2rem;
+  line-height: 1;
+}
+
+.landing-hero p {
+  font-size: clamp(1.1rem, 2vw, 1.3rem);
+  opacity: 0.8;
+  max-width: 800px;
+  margin: 0 auto 3.5rem;
+}
+
+.demo-card-v2 {
+  background: #151b2d;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 1.5rem;
+  transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.demo-card-v2:hover {
+  transform: translateY(-5px);
+  border-color: var(--accent-color);
 }
 
 /* Sidebar Styling */
@@ -1605,7 +1675,7 @@ body {
   margin-top: 0.75rem;
   font-size: 0.85rem;
   line-height: 1.5;
-  color: var(--text-main);
+  color: #1e293b; /* Forcé en sombre pour la lisibilité sur fond clair */
 }
 
 .btn-icon-small {
