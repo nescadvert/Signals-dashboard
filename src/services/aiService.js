@@ -29,102 +29,58 @@ export const generateSignalAnalysis = async (signal, retryCount = 1) => {
   // En PRODUCTION (Vercel), on utilise le Pont Sécurisé pour cacher la clé API OpenAI
   if (import.meta.env.PROD) {
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 20000); // Augmenté à 20s
+    const timeoutId = setTimeout(() => controller.abort(), 20000); 
 
     try {
-      console.log('--- AI DEBUG START ---');
+      console.log('--- AI-DEBUG-V3 ---');
       const response = await fetch('/api/ai-proxy', {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',
-          'x-admin-password': adminToken || 'MISSING_TOKEN'
+          'x-admin-password': adminToken || 'MISSING'
         },
         signal: controller.signal,
-        body: JSON.stringify({ 
-          prompt, 
-          systemMessage: 'You are a professional sales auditor. Output only valid JSON.',
-          temperature: 0.3
-        })
+        body: JSON.stringify({ prompt, systemMessage: 'Act as Sales Qualify AI.', temperature: 0.3 })
       });
 
       clearTimeout(timeoutId);
 
       if (!response.ok) {
-        const status = response.status;
-        const text = await response.text().catch(() => 'No response body');
-        console.error(`AI Proxy Error Details: Status ${status}, Body: ${text}`);
-        
-        let parsedError = text;
-        try {
-          const json = JSON.parse(text);
-          parsedError = json.error?.message || json.error || text;
-        } catch (e) {}
-
-        throw new Error(`[Status ${status}] ${typeof parsedError === 'string' ? parsedError : JSON.stringify(parsedError)}`);
+        const text = await response.text().catch(() => 'No body');
+        throw new Error(`!! AI-SERVICE-ERROR !! [Status ${response.status}] ${text.substring(0, 50)}`);
       }
 
       const data = await response.json();
-      console.log('AI Proxy Success Data received');
-      const content = data.choices[0].message.content;
-      return JSON.parse(content);
+      return JSON.parse(data.choices[0].message.content);
     } catch (error) {
       clearTimeout(timeoutId);
-      const isTimeout = error.name === 'AbortError';
-      const msg = isTimeout ? 'Le serveur a mis trop de temps à répondre (Timeout 20s)' : error.message;
-      console.error('AI Analysis Critical Error:', msg);
-      
-      if (retryCount > 0 && !isTimeout) {
-        console.log('Retrying analysis...');
-        await new Promise(resolve => setTimeout(resolve, 2000));
-        return generateSignalAnalysis(signal, retryCount - 1);
-      }
-      throw new Error(msg);
+      const finalMsg = error.name === 'AbortError' ? 'TIMEOUT_20S' : error.message;
+      throw new Error(`!! AI-SERVICE-ERROR !! ${finalMsg}`);
     }
   }
 
-  // En DÉVELOPPEMENT (Local), on continue en direct si la clé est présente
-  if (!OPENAI_API_KEY) {
-    throw new Error('OpenAI API Key is missing. Please check your .env file.');
-  }
+  // En DÉVELOPPEMENT (Local)
+  if (!OPENAI_API_KEY) throw new Error('!! AI-SERVICE-ERROR !! API Key missing');
 
   try {
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${OPENAI_API_KEY}`,
-      },
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${OPENAI_API_KEY}` },
       body: JSON.stringify({
         model: 'gpt-4o',
-        messages: [
-          { role: 'system', content: 'You are a professional sales auditor. Output only valid JSON. Be conservative and skeptical.' },
-          { role: 'user', content: prompt }
-        ],
-        response_format: { type: 'json_object' },
-        temperature: 0.3,
-        max_tokens: 1000,
+        messages: [{ role: 'user', content: prompt }],
+        response_format: { type: 'json_object' }
       }),
     });
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
-      const errorMessage = errorData.error?.message || errorData.error || 'OpenAI API request failed';
-      throw new Error(typeof errorMessage === 'string' ? errorMessage : JSON.stringify(errorMessage));
+      throw new Error(`!! AI-SERVICE-ERROR !! Local: ${JSON.stringify(errorData)}`);
     }
 
     const data = await response.json();
-    let content = data.choices[0].message.content;
-
-    if (content.includes('```')) {
-      content = content.replace(/```json\n?|```/g, '').trim();
-    }
-
-    return JSON.parse(content);
+    return JSON.parse(data.choices[0].message.content);
   } catch (error) {
-    if (retryCount > 0) {
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      return generateSignalAnalysis(signal, retryCount - 1);
-    }
-    throw error;
+    throw new Error(`!! AI-SERVICE-ERROR !! ${error.message}`);
   }
 };
