@@ -175,7 +175,7 @@ export default function LandingPageView({ signals = [], onSwitchToAdmin }) {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}>
               {[
                 { icon: <Zap color="#ef4444"/>, title: "Détection Instantanée", desc: "Soyez le premier au courant quand un prospect exprime un besoin." },
-                { icon: <ShieldCheck color="#10b981"/>, title: "Qualification de Précision", desc: "Notre IA filtre 95% du 'bruit' pour ne garder que les vraies marques/producteurs." },
+                { icon: <ShieldCheck color="#10b981"/>, title: "Qualification de Précision", desc: "Notre IA filtre 95% du 'bruit' pour ne garder que les prospects les plus qualifiés pour votre activité." },
                 { icon: <MessageSquare color="#00ADEF"/>, title: "Messages Personnalisés", desc: "Des scripts LinkedIn/Instagram générés spécifiquement pour chaque post détecté." }
               ].map((feat, idx) => (
                 <div key={idx} style={{ display: 'flex', gap: '2rem' }}>
@@ -192,33 +192,19 @@ export default function LandingPageView({ signals = [], onSwitchToAdmin }) {
           </div>
 
           <div style={{ position: 'relative' }}>
-             <div className="glass-surface" style={{ borderRadius: '32px', padding: '2rem', boxShadow: '0 50px 100px -20px rgba(0,0,0,0.8)' }}>
-                <div style={{ height: '380px', width: '100%', background: 'linear-gradient(135deg, rgba(0,173,239,0.1), rgba(139,92,246,0.1))', borderRadius: '20px', display: 'flex', flexDirection: 'column', padding: '2rem' }}>
-                  <div style={{ display: 'flex', gap: '15px', marginBottom: '2rem' }}>
-                    <div style={{ width: '50px', height: '50px', borderRadius: '50%', background: 'rgba(255,255,255,0.1)' }} />
-                    <div style={{ flex: 1 }}>
-                      <div style={{ height: '14px', width: '80%', background: 'rgba(255,255,255,0.2)', borderRadius: '10px', marginBottom: '10px' }} />
-                      <div style={{ height: '10px', width: '40%', background: 'rgba(255,255,255,0.1)', borderRadius: '10px' }} />
-                    </div>
-                  </div>
-                  <div style={{ flex: 1, background: 'rgba(0,0,0,0.2)', borderRadius: '15px', padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                    <div style={{ height: '10px', width: '100%', background: 'rgba(255,255,255,0.05)', borderRadius: '5px' }} />
-                    <div style={{ height: '10px', width: '90%', background: 'rgba(255,255,255,0.05)', borderRadius: '5px' }} />
-                    <div style={{ height: '10px', width: '95%', background: 'rgba(255,255,255,0.05)', borderRadius: '5px' }} />
-                    <div style={{ height: '10px', width: '50%', background: 'rgba(255,255,255,0.05)', borderRadius: '5px' }} />
-                  </div>
-                  <div style={{ marginTop: '2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <div style={{ display: 'flex', gap: '8px' }}>
-                      <div style={{ width: '24px', height: '24px', borderRadius: '6px', background: 'rgba(255,255,255,0.1)' }} />
-                      <div style={{ width: '24px', height: '24px', borderRadius: '6px', background: 'rgba(255,255,255,0.1)' }} />
-                    </div>
-                    <div style={{ padding: '8px 16px', background: 'var(--accent-color)', borderRadius: '10px', fontSize: '0.8rem', fontWeight: '800' }}>QUALIFIÉ PAR IA</div>
-                  </div>
+             <div className="glass-surface" style={{ borderRadius: '32px', padding: '1rem', boxShadow: '0 50px 100px -20px rgba(0,0,0,0.8)', overflow: 'hidden' }}>
+                <div style={{ width: '100%', borderRadius: '20px', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.05)', background: '#000' }}>
+                   {/* Vidéo de démo interface */}
+                   <img 
+                    src="/video/dashboard-demo.webp" 
+                    alt="Interface Demo" 
+                    style={{ width: '100%', display: 'block' }} 
+                   />
                 </div>
              </div>
              {/* Dynamic Floatings */}
-             <div style={{ position: 'absolute', top: '10%', right: '-30px', background: '#10b981', color: 'white', padding: '12px 20px', borderRadius: '12px', fontWeight: '800', boxShadow: '0 10px 20px rgba(16,185,129,0.3)' }}>98% Match</div>
-             <div style={{ position: 'absolute', bottom: '15%', left: '-30px', background: '#f59e0b', color: 'white', padding: '12px 20px', borderRadius: '12px', fontWeight: '800', boxShadow: '0 10px 20px rgba(245,158,11,0.3)' }}>Intent Detected</div>
+             <div style={{ position: 'absolute', top: '5%', right: '-40px', background: '#10b981', color: 'white', padding: '14px 24px', borderRadius: '14px', fontWeight: '900', boxShadow: '0 10px 30px rgba(16,185,129,0.4)', zIndex: 2 }}>98% IA MATCH</div>
+             <div style={{ position: 'absolute', bottom: '10%', left: '-30px', background: '#00ADEF', color: 'white', padding: '14px 24px', borderRadius: '14px', fontWeight: '900', boxShadow: '0 10px 30px rgba(0,173,239,0.4)', zIndex: 2 }}>LEAD CHAUD</div>
           </div>
         </div>
       </section>
