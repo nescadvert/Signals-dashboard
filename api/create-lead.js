@@ -3,7 +3,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { name, email, company } = req.body;
+  const { name, email, company, phone } = req.body;
   const AIRTABLE_API_KEY = process.env.AIRTABLE_API_KEY;
   const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID;
 
@@ -15,6 +15,7 @@ export default async function handler(req, res) {
     'Full Name': name || 'Prospect Web',
     'Email': email || '',
     'Company': company || '',
+    'Phone': phone || '',
     'Pipeline status': 'New',
     'Level': 'Warm',
     'Notes': `[INTERET SITE WEB] Demande de démo enregistrée.\nEntreprise: ${company || 'N/A'}\nDate: ${new Date().toLocaleString('fr-FR')}`

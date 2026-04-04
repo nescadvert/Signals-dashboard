@@ -67,14 +67,6 @@ function App() {
     }
   }, [isAuthenticated, activeView]);
 
-  const handleLogin = (password) => {
-    // On transmet le mot de passe aux services pour les futurs appels API sécurisés
-    setAirtableToken(password);
-    setAIAdminToken(password);
-    setIsAuthenticated(true);
-    setActiveView('overview');
-  };
-
   const handleViewChange = (view) => {
     setActiveView(view);
     setIsMenuOpen(false); // Ferme le menu sur mobile après sélection

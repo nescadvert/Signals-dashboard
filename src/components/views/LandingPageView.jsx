@@ -3,7 +3,7 @@ import { Target, ShieldCheck, Zap, ArrowRight, MousePointer2, Layout, Database, 
 import { createProspectInterest } from '../../services/airtableService';
 
 export default function LandingPageView({ signals = [], onSwitchToAdmin }) {
-  const [formData, setFormData] = useState({ name: '', email: '', company: '' });
+  const [formData, setFormData] = useState({ name: '', email: '', company: '', phone: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [demoSignals, setDemoSignals] = useState([]);
@@ -243,16 +243,29 @@ export default function LandingPageView({ signals = [], onSwitchToAdmin }) {
                 />
               </div>
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '4rem' }}>
-              <label style={{ fontSize: '0.9rem', fontWeight: '800', opacity: 0.6 }}>Entreprise / Agence</label>
-              <input 
-                type="text" 
-                placeholder="Votre magnifique entreprise"
-                style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.1)', padding: '18px 24px', borderRadius: '16px', color: 'white', outline: 'none', fontSize: '1.1rem' }}
-                value={formData.company}
-                onChange={(e) => setFormData({...formData, company: e.target.value})}
-                required
-              />
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '2rem', marginBottom: '2rem' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                <label style={{ fontSize: '0.9rem', fontWeight: '800', opacity: 0.6 }}>Entreprise / Agence</label>
+                <input 
+                  type="text" 
+                  placeholder="Votre magnifique entreprise"
+                  style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.1)', padding: '18px 24px', borderRadius: '16px', color: 'white', outline: 'none', fontSize: '1.1rem' }}
+                  value={formData.company}
+                  onChange={(e) => setFormData({...formData, company: e.target.value})}
+                  required
+                />
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                <label style={{ fontSize: '0.9rem', fontWeight: '800', opacity: 0.6 }}>Téléphone</label>
+                <input 
+                  type="tel" 
+                  placeholder="+33 6 12 34 56 78"
+                  style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.1)', padding: '18px 24px', borderRadius: '16px', color: 'white', outline: 'none', fontSize: '1.1rem' }}
+                  value={formData.phone}
+                  onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                  required
+                />
+              </div>
             </div>
             <button 
               type="submit" 

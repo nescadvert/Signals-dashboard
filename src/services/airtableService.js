@@ -569,6 +569,7 @@ export const createProspectInterest = async (prospectData) => {
     'Full Name': prospectData.name || 'Prospect Web',
     'Email': prospectData.email || '',
     'Company': prospectData.company || '',
+    'Phone': prospectData.phone || '',
     'Pipeline status': 'New',
     'Level': 'Warm',
     'Notes': `[DEBUG LOCAL] Intérêt site web.\nEntreprise: ${prospectData.company || 'N/A'}`
