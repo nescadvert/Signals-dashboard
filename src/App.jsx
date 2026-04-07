@@ -72,6 +72,12 @@ function App() {
     setIsMenuOpen(false); // Ferme le menu sur mobile après sélection
   };
 
+  const handleLogin = (token) => {
+    setAirtableToken(token);
+    setAIAdminToken(token);
+    setIsAuthenticated(true);
+  };
+
   // Déterminer si on doit afficher le Sidebar (uniquement en admin authentifié)
   const showSidebar = activeView !== 'landing-page' && isAuthenticated;
 
